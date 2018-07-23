@@ -15,7 +15,7 @@
     <div class="container margin-b-30 pad-10" ng-if="$ctrl.isLoading === false">
             <form>
                 <p class="has-text-centered">Search by City:
-                    <input ng-model="$ctrl.query" />
+                    <input ng-model="$ctrl.query" required/>
                     <button class="rm-orange-back white" ng-click="$ctrl.search($ctrl.query)"><b>Search</b></button>
                     <p class="has-text-centered error" ng-if="$ctrl.isError === true"><u>{{$ctrl.error}}</u></p>
                 </p>

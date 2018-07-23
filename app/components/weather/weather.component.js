@@ -25,6 +25,10 @@ angular.
        });
        self.search = function(query){
             self.error = '';
+            if(query.trim() === '') {
+                self.isError = true;
+                self.error = 'Please enter a valid city.'
+            } else {
             $http.get(`http://api.openweathermap.org/data/2.5/weather?q=${query},us&units=imperial&appid=9e147d5030e6fcdae1ae8c95e25ee211`).then(function(response){
                 updateCurrentTemp(self,response);
             }).catch(function(e){
@@ -37,6 +41,7 @@ angular.
                 self.isError = true;
                 self.error = e.data.message;
             });
+           }
         self.query = '';
        };
       }
