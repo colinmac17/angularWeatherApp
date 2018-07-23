@@ -24,10 +24,10 @@ angular.
             });
        });
        self.search = function(query, testing){
+           if(testing) return query.length > 0;
            var url;
            if(!isNaN(query)) url = `http://api.openweathermap.org/data/2.5/weather?zip=${query}&units=imperial&appid=9e147d5030e6fcdae1ae8c95e25ee211`;
            else url = `http://api.openweathermap.org/data/2.5/weather?q=${query}&units=imperial&appid=9e147d5030e6fcdae1ae8c95e25ee211`;
-            if(testing) return query.length > 0;
             self.error = '';
             if(query === '') {
                 self.isError = true;
