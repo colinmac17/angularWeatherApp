@@ -8,29 +8,37 @@ angular.
        self.isLoading = true;
        init(self, function(){
            self.isLoading = false;
+           self.isError = false;
+           self.error = '';
             self.latitude = JSON.parse(sessionStorage.getItem('latitude'));
             self.longitude = JSON.parse(sessionStorage.getItem('longitude'));
 
             //Get Current Weather
             $http.get(`http://api.openweathermap.org/data/2.5/weather?lat=${self.latitude}&lon=${self.longitude}&units=imperial&appid=9e147d5030e6fcdae1ae8c95e25ee211`).then(function(response){
-                //console.log(response);
-                self.temp = response.data.main.temp;
-                self.locationName = response.data.name;
-                let now = new Date();
-                let today = now.getDate();
-                let month = now.getMonth() + 1;
-                let year = now.getFullYear();
-                self.dateTime = `${month}/${today}/${year}`;
-                self.desc = response.data.weather[0].description;
-                self.icon = `http://openweathermap.org/img/w/${response.data.weather[0].icon}.png`
+                updateCurrentTemp(self,response);
             });
 
             //Get Forecast
             $http.get(`http://api.openweathermap.org/data/2.5/forecast?lat=${self.latitude}&lon=${self.longitude}&units=imperial&appid=9e147d5030e6fcdae1ae8c95e25ee211`).then(function(response){
-                console.log(response);
-                
+                updateForecast(self,response);
             });
        });
+       self.search = function(query){
+            self.error = '';
+            $http.get(`http://api.openweathermap.org/data/2.5/weather?q=${query},us&units=imperial&appid=9e147d5030e6fcdae1ae8c95e25ee211`).then(function(response){
+                updateCurrentTemp(self,response);
+            }).catch(function(e){
+                self.isError = true;
+                self.error = e.data.message;
+            });
+            $http.get(`http://api.openweathermap.org/data/2.5/forecast?q=${query},us&units=imperial&appid=9e147d5030e6fcdae1ae8c95e25ee211`).then(function(response){
+                updateForecast(self,response);
+            }).catch(function(e){
+                self.isError = true;
+                self.error = e.data.message;
+            });
+        self.query = '';
+       };
       }
     ]
   });
@@ -53,4 +61,42 @@ angular.
 
   function init(self, callback){
       getLocation(callback);
+  }
+
+  function updateCurrentTemp(self,response){
+    self.temp = response.data.main.temp;
+    self.locationName = response.data.name;
+    let now = new Date();
+    let today = now.getDate();
+    let month = now.getMonth() + 1;
+    let year = now.getFullYear();
+    self.dateTime = `${month}/${today}/${year}`;
+    self.desc = response.data.weather[0].description;
+    self.icon = `http://openweathermap.org/img/w/${response.data.weather[0].icon}.png`;
+  }
+
+  function updateForecast(self,response){
+    var data = response.data.list;
+    var days = [];
+    data.forEach(function(threeHours){
+        let date = threeHours.dt_txt.split(' ')[0];
+        let time = threeHours.dt_txt.split(' ')[1];
+        days.push({date: date, time: time, temp: threeHours.main.temp, icon: `http://openweathermap.org/img/w/${threeHours.weather[0].icon}.png`, desc: threeHours.weather[0].description});
+    });
+    
+    var weatherByDays = {};
+    var arrayOfDays = []
+    days.forEach(function(day){
+        let date = day.date;
+        let dataObj = {date: date, desc: day.desc, icon: day.icon, temp: day.temp, time: day.time};
+        if(!weatherByDays[date]){
+            weatherByDays[date] = [];
+        }
+        weatherByDays[date].push(dataObj);
+    });
+    var keys = Object.keys(weatherByDays);
+    keys.forEach(function(date){
+        arrayOfDays.push(weatherByDays[date]);
+    });
+    self.days = arrayOfDays;
   }

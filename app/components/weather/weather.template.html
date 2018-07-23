@@ -4,7 +4,7 @@
         <div class="container">
             <h1 class="title is-2 white nunito">RocketMiles Weather App</h1>
             <h1 class="subtitle white" ng-if="$ctrl.isLoading === true">Weather forecast for ...</h1>
-            <h1 class="subtitle white" ng-if="$ctrl.isLoading === false">Weather forecast for {{$ctrl.locationName}}</h1>
+            <h1 class="subtitle white" ng-if="$ctrl.isLoading === false">Weather forecast for <u>{{$ctrl.locationName}}</u></h1>
         </div>
     </div>
     </section>
@@ -12,30 +12,61 @@
     <div ng-if="$ctrl.isLoading === true" class="has-text-centered">
             <div class="loader has-text-centered"></div>
     </div>
-    <div class="container" ng-if="$ctrl.isLoading === false">
-        <div class="columns">
-            <div class="column">
-                <div class="card">
-                    <div class="card-content">
-                        <h1 class="title is-4 has-text-centered rm-orange nunito">Current Weather</h1>
-                        <div class="media">
-                            <div class="media-left">
-                                <figure class="image is-48x48">
-                                    <img ng-src="{{$ctrl.icon}}" alt="Icon">
-                                </figure>
-                            </div>
-                            <div class="media-content">
-                                <p class="title is-4">{{$ctrl.locationName}}</p>
-                                <p class="subtitle is-6">{{$ctrl.temp}}°F</p>
-                            </div>
+    <div class="container margin-b-30 pad-10" ng-if="$ctrl.isLoading === false">
+            <form>
+                <p class="has-text-centered">Search by City:
+                    <input ng-model="$ctrl.query" />
+                    <button class="rm-orange-back white" ng-click="$ctrl.search($ctrl.query)"><b>Search</b></button>
+                    <p class="has-text-centered error" ng-if="$ctrl.isError === true"><u>{{$ctrl.error}}</u></p>
+                </p>
+            </form>
+            <br/>
+            <div class="card">
+                <div class="card-content">
+                    <h1 class="title is-4 has-text-centered rm-orange nunito">Current Weather</h1>
+                    <div class="media">
+                        <div class="media-left">
+                            <figure class="image is-48x48">
+                                <img ng-src="{{$ctrl.icon}}" alt="Icon">
+                            </figure>
                         </div>
-                        <div class="content">
-                            <p class="subtitle is-6">{{$ctrl.desc}}</p>
-                            <time datetime="{{$ctrl.dateTime}}">{{$ctrl.dateTime}}</time>
+                        <div class="media-content">
+                            <p class="title is-4">{{$ctrl.temp}}°F</p>
                         </div>
+                    </div>
+                    <div class="content">
+                        <p class="subtitle is-6">{{$ctrl.desc}}</p>
                     </div>
                 </div>
             </div>
+            <br/><br/>
+            <h1 class="title is-4 has-text-centered rm-orange nunito">Weather Forecast</h1>
+            <table class="table is-bordered is-striped">
+                <thead>
+                    <tr>
+                        <th><abbr title="Date">Date</abbr></th>
+                        <th><abbr title="Time">Time</abbr></th>
+                        <th><abbr title="Temp">Temp</abbr></th>
+                        <th><abbr title="Desc">Description</abbr></th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th><abbr title="Date">Date</abbr></th>
+                        <th><abbr title="Time">Time</abbr></th>
+                        <th><abbr title="Temp">Temp</abbr></th>
+                        <th><abbr title="Desc">Description</abbr></th>
+                    </tr>
+                </tfoot>
+                <tbody ng-repeat="day in $ctrl.days">
+                    <tr ng-repeat="time in day">
+                        <td>{{day[0].date}}<img ng-src="{{time.icon}}" alt="Icon"></td>
+                        <td>{{time.time}}</td>
+                        <td>{{time.temp}}°F</td>
+                        <td>{{time.desc}}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

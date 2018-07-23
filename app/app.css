@@ -36,7 +36,7 @@
 }
 
 .fix-footer {
-  position: absolute;
+  position: relative;
   width: 100%;
   bottom: 0;
   overflow:hidden;
@@ -44,4 +44,22 @@
 
 .footer {
   padding: 2rem;
+}
+
+.margin-b-30{
+  margin-bottom: 30px;
+}
+
+.pad-10 {
+  padding: 10px;
+}
+
+.table, .card {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.error {
+  color:red;
+  font-weight: 700;
 }
