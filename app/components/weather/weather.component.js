@@ -86,7 +86,7 @@ angular.
     var days = [];
     data.forEach(function(threeHours){
         let date = threeHours.dt_txt.split(' ')[0];
-        let time = threeHours.dt_txt.split(' ')[1];
+        let time = convertTime(threeHours.dt_txt.split(' ')[1]);
         days.push({date: date, time: time, temp: threeHours.main.temp, icon: `http://openweathermap.org/img/w/${threeHours.weather[0].icon}.png`, desc: threeHours.weather[0].description});
     });
     
@@ -106,3 +106,7 @@ angular.
     });
     self.days = arrayOfDays;
   }
+
+  function convertTime(input) {
+    return moment(input, 'HH:mm').format('h:mm A');
+}
