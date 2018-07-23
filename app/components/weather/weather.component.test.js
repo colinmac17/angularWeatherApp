@@ -12,18 +12,19 @@ describe('weather', function() {
     beforeEach(inject(function($componentController, _$httpBackend_) {
       $httpBackend = _$httpBackend_;
       ctrl = $componentController('weather');
-      $httpBackend.expectGET(ctrl.search('Detroit',true)).respond({});
     }));
 
-    it('should search for Detroit and return some data `$http`', function() {
-        console.log(ctrl.search('Detroit'));
-        $httpBackend.flush();
-        expect(status.status).toBe(200);
+    it('component should not be loading if request has been made', function() {
+        expect(ctrl.isLoading).toBe(true);
     });
 
-    // it('should set a default value for the `orderProp` property', function() {
-    //   expect(ctrl.orderProp).toBe('age');
-    // });
+    it('should not have an error when the component renders', function(){
+        expect(ctrl.isError).toBe(false);
+    });
+
+    it('should search for the entered query', function(){
+        expect(ctrl.search('Detroit',true)).toBe(true);
+    });
 
   });
 

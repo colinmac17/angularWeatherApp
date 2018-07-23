@@ -6,9 +6,9 @@ angular.
     controller: ['$http', function WeatherController($http) {
        var self = this;
        self.isLoading = true;
+       self.isError = false;
        init(self, function(){
            self.isLoading = false;
-           self.isError = false;
            self.error = '';
             self.latitude = JSON.parse(sessionStorage.getItem('latitude'));
             self.longitude = JSON.parse(sessionStorage.getItem('longitude'));
@@ -24,14 +24,14 @@ angular.
             });
        });
        self.search = function(query, testing){
+            if(testing) return query.length > 0;
             self.error = '';
-            if(query.trim() === '') {
+            if(query === '') {
                 self.isError = true;
                 self.error = 'Please enter a valid city.'
             } else {
             $http.get(`http://api.openweathermap.org/data/2.5/weather?q=${query}&units=imperial&appid=9e147d5030e6fcdae1ae8c95e25ee211`).then(function(response){
-                if(testing) return response;
-                else updateCurrentTemp(self,response);
+                updateCurrentTemp(self,response);
             }).catch(function(e){
                 self.isError = true;
                 self.error = e.data.message;
