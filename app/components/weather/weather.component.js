@@ -8,8 +8,10 @@ angular.
        init(self, function(){
             self.latitude = JSON.parse(sessionStorage.getItem('latitude'));
             self.longitude = JSON.parse(sessionStorage.getItem('longitude'));
-            $http.get(`https://api.openweathermap.org/data/2.5/weather?lat=${self.latitude}&lon=${self.longitude}&appid=9e147d5030e6fcdae1ae8c95e25ee211`).then(function(response){
+            $http.get(`https://api.openweathermap.org/data/2.5/weather?lat=${self.latitude}&lon=${self.longitude}&units=imperial&appid=9e147d5030e6fcdae1ae8c95e25ee211`).then(function(response){
                 console.log(response);
+                var { temp } = response.data.main;
+                self.temp = temp;
             });
        });
       }
@@ -18,7 +20,7 @@ angular.
 
   function getLocation(callback){
     if(sessionStorage.getItem('latitude') !== null || sessionStorage.getItem('longitude') !== null){
-        return;
+        callback();
     } else {
         navigator.geolocation.getCurrentPosition(function(position){
             sessionStorage.setItem('latitude', position.coords.latitude);
