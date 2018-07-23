@@ -1,7 +1,41 @@
-<div class="weather-app">
-    <div class="header">
-        <h1 class="title is-2 has-text-centered">RocketMiles Weather App</h1>
-        <h1 class="subtitle has-text-centered">Bringing the Weather to you</h1>
+<div class="weather-app container">
+    <section class="hero rm-orange-back">
+    <div class="hero-body header has-text-centered">
+        <div class="container">
+            <h1 class="title is-2 white nunito">RocketMiles Weather App</h1>
+            <h1 class="subtitle white" ng-if="$ctrl.isLoading === true">Weather forecast for ...</h1>
+            <h1 class="subtitle white" ng-if="$ctrl.isLoading === false">Weather forecast for {{$ctrl.locationName}}</h1>
+        </div>
     </div>
-    <p>Temperature: {{$ctrl.temp}}</p>
+    </section>
+    <br/>
+    <div ng-if="$ctrl.isLoading === true" class="has-text-centered">
+            <div class="loader has-text-centered"></div>
+    </div>
+    <div class="container" ng-if="$ctrl.isLoading === false">
+        <div class="columns">
+            <div class="column">
+                <div class="card">
+                    <div class="card-content">
+                        <h1 class="title is-4 has-text-centered rm-orange nunito">Current Weather</h1>
+                        <div class="media">
+                            <div class="media-left">
+                                <figure class="image is-48x48">
+                                    <img ng-src="{{$ctrl.icon}}" alt="Icon">
+                                </figure>
+                            </div>
+                            <div class="media-content">
+                                <p class="title is-4">{{$ctrl.locationName}}</p>
+                                <p class="subtitle is-6">{{$ctrl.temp}}°F</p>
+                            </div>
+                        </div>
+                        <div class="content">
+                            <p class="subtitle is-6">{{$ctrl.desc}}</p>
+                            <time datetime="{{$ctrl.dateTime}}">{{$ctrl.dateTime}}</time>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

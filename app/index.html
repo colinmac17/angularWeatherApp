@@ -8,13 +8,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="bower_components/html5-boilerplate/dist/css/normalize.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito|Poppins" rel="stylesheet">
   <link rel="stylesheet" href="app.css">
 </head>
 <body>
-  <div class="container"></div>
+  <div class="container">
     <weather></weather>
   </div>
 
+  <footer class="footer fix-footer">
+      <div class="content has-text-centered">
+        <p>
+          Built by <a href="https://colinmcatee.com">Colin McAtee</a> for <a href="https://www.rocketmiles.com/">RocketMiles</a>.
+        </p>
+      </div>
+  </footer>
   <script src="bower_components/angular/angular.js"></script>
   <script src="app.js"></script>
   <script src="components/weather/weather.module.js"></script>
