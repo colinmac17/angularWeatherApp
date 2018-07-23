@@ -73,7 +73,7 @@ angular.
   }
 
   function updateCurrentTemp(self,response){
-    self.temp = response.data.main.temp;
+    self.temp = Math.round(response.data.main.temp);
     self.locationName = response.data.name;
     let now = new Date();
     let today = now.getDate();
@@ -90,7 +90,7 @@ angular.
     data.forEach(function(threeHours){
         let date = threeHours.dt_txt.split(' ')[0];
         let time = convertTime(threeHours.dt_txt.split(' ')[1]);
-        days.push({date: date, time: time, temp: threeHours.main.temp, icon: `http://openweathermap.org/img/w/${threeHours.weather[0].icon}.png`, desc: threeHours.weather[0].description});
+        days.push({date: date, time: time, temp: Math.round(threeHours.main.temp), icon: `http://openweathermap.org/img/w/${threeHours.weather[0].icon}.png`, desc: threeHours.weather[0].description});
     });
     
     var weatherByDays = {};
