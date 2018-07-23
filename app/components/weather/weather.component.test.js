@@ -1,36 +1,30 @@
 describe('weather', function() {
-    it('should add two numbers', function(){
-        expect(1+2).toBe(3);
+  // Load the module that contains the `phoneList` component before each test
+  beforeEach(module('weather'));
+
+  // Test the controller
+  describe('WeatherController', function() {
+    var $httpBackend, ctrl;
+
+    // The injector ignores leading and trailing underscores here (i.e. _$httpBackend_).
+    // This allows us to inject a service and assign it to a variable with the same name
+    // as the service while avoiding a name conflict.
+    beforeEach(inject(function($componentController, _$httpBackend_) {
+      $httpBackend = _$httpBackend_;
+      ctrl = $componentController('weather');
+      $httpBackend.expectGET(ctrl.search('Detroit',true)).respond({});
+    }));
+
+    it('should search for Detroit and return some data `$http`', function() {
+        console.log(ctrl.search('Detroit'));
+        $httpBackend.flush();
+        expect(status.status).toBe(200);
     });
-//   // Load the module that contains the `phoneList` component before each test
-//   beforeEach(module('weather'));
 
-//   // Test the controller
-//   describe('PhoneListController', function() {
-//     var $httpBackend, ctrl;
+    // it('should set a default value for the `orderProp` property', function() {
+    //   expect(ctrl.orderProp).toBe('age');
+    // });
 
-//     // The injector ignores leading and trailing underscores here (i.e. _$httpBackend_).
-//     // This allows us to inject a service and assign it to a variable with the same name
-//     // as the service while avoiding a name conflict.
-//     beforeEach(inject(function($componentController, _$httpBackend_) {
-//       $httpBackend = _$httpBackend_;
-//       $httpBackend.expectGET('phones/phones.json')
-//                   .respond([{name: 'Nexus S'}, {name: 'Motorola DROID'}]);
-
-//       ctrl = $componentController('phoneList');
-//     }));
-
-//     it('should create a `phones` property with 2 phones fetched with `$http`', function() {
-//       expect(ctrl.phones).toBeUndefined();
-
-//       $httpBackend.flush();
-//       expect(ctrl.phones).toEqual([{name: 'Nexus S'}, {name: 'Motorola DROID'}]);
-//     });
-
-//     it('should set a default value for the `orderProp` property', function() {
-//       expect(ctrl.orderProp).toBe('age');
-//     });
-
-//   });
+  });
 
 });
