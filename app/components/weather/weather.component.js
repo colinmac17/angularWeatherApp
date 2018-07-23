@@ -25,21 +25,27 @@ angular.
        });
        self.search = function(query, testing){
           if(testing) return query.length > 0;
-           var url;
-           if(!isNaN(query)) url = `http://api.openweathermap.org/data/2.5/weather?zip=${query}&units=imperial&appid=9e147d5030e6fcdae1ae8c95e25ee211`;
-           else url = `http://api.openweathermap.org/data/2.5/weather?q=${query}&units=imperial&appid=9e147d5030e6fcdae1ae8c95e25ee211`;
+           var todayUrl, forecastUrl;
+           if(!isNaN(query)) {
+                todayUrl = `http://api.openweathermap.org/data/2.5/weather?zip=${query}&units=imperial&appid=9e147d5030e6fcdae1ae8c95e25ee211`;
+                forecastUrl = `http://api.openweathermap.org/data/2.5/forecast?zip=${query}&units=imperial&appid=9e147d5030e6fcdae1ae8c95e25ee211`;
+           }
+           else {
+                todayUrl = `http://api.openweathermap.org/data/2.5/weather?q=${query}&units=imperial&appid=9e147d5030e6fcdae1ae8c95e25ee211`;
+                forecastUrl = `http://api.openweathermap.org/data/2.5/forecast?q=${query}&units=imperial&appid=9e147d5030e6fcdae1ae8c95e25ee211`;
+           }
             self.error = '';
             if(query === '') {
                 self.isError = true;
                 self.error = 'Please enter a valid city.'
             } else {
-            $http.get(url).then(function(response){
+            $http.get(todayUrl).then(function(response){
                 updateCurrentTemp(self,response);
             }).catch(function(e){
                 self.isError = true;
                 self.error = e.data.message;
             });
-            $http.get(url).then(function(response){
+            $http.get(forecastUrl).then(function(response){
                 updateForecast(self,response);
             }).catch(function(e){
                 self.isError = true;
